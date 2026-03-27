@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TikTok Profile</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Courier New", monospace;
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+        color: #00ff00;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+      .container {
+        width: 100%;
+        max-width: 800px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid #00ff00;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        padding: 30px;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+      }
+      .header h2 {
+        color: #00ff00;
+        font-size: 28px;
+        text-shadow: 0 0 10px #00ff00;
+        margin-bottom: 10px;
+      }
+      .header::before {
+        content: ">>> ";
+        color: #00ff00;
+      }
+      .header::after {
+        content: " <<<";
+        color: #00ff00;
+      }
+      .input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      #username {
+        flex: 1;
+        background: #000;
+        border: 2px solid #00ff00;
+        color: #00ff00;
+        padding: 12px 15px;
+        font-family: "Courier New", monospace;
+        font-size: 16px;
+        border-radius: 5px;
+        outline: none;
+        transition: all 0.3s;
+      }
+      #username:focus {
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        border-color: #00ff88;
+      }
+      #username::placeholder {
+        color: #00aa00;
+      }
+      button {
+        background: #00ff00;
+        border: none;
+        color: #000;
+        padding: 12px 30px;
+        font-family: "Courier New", monospace;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.3s;
+        text-transform: uppercase;
+      }
+      button:hover {
+        background: #00cc00;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+        transform: translateY(-2px);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      .terminal {
+        background: #000;
+        border: 2px solid #00ff00;
+        border-radius: 5px;
+        padding: 20px;
+        min-height: 300px;
+        max-height: 600px;
+        overflow-y: auto;
+        position: relative;
+      }
+      .terminal::before {
+        content: "┌─[root@root]─[~]";
+        display: block;
+        color: #00ff00;
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      .terminal::after {
+        content: "└─$ ";
+        display: block;
+        color: #00ff00;
+        margin-top: 10px;
+      }
+      #result {
+        color: #00ff00;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+      }
+      .avatar-image {
+        display: block;
+        margin: 10px 0 10px 20px;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #00ff00;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        object-fit: cover;
+      }
+      .profile-link {
+        color: #00ffff;
+        text-decoration: none;
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        transition: all 0.3s;
+      }
+      .profile-link:hover {
+        color: #00ff00;
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+        text-decoration: underline;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        color: #00ff00;
+        font-size: 18px;
+        animation: blink 1s infinite;
+      }
+      .loading.active {
+        display: block;
+      }
+      @keyframes blink {
+        0%,
+        50%,
+        100% {
+          opacity: 1;
+        }
+        25%,
+        75% {
+          opacity: 0.5;
+        }
+      }
+      .terminal::-webkit-scrollbar {
+        width: 10px;
+      }
+      .terminal::-webkit-scrollbar-track {
+        background: #000;
+      }
+      .terminal::-webkit-scrollbar-thumb {
+        background: #00ff00;
+        border-radius: 5px;
+      }
+      .status {
+        color: #00ff00;
+        font-size: 12px;
+        margin-top: 10px;
+        text-align: center;
+      }
+      .error {
+        color: #ff0000 !important;
+        text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+      }
+      .highlight {
+        color: #00ffff;
+      }
+      .verified-badge {
+        color: #00ffff;
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+      }
+      .stat-value {
+        color: #ffff00;
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>TikTok Profile</h2>
+      </div>
+
+      <div class="input-group">
+        <input
+          type="text"
+          id="username"
+          placeholder="Masukkan username TikTok..."
+          onkeypress="if (event.key === 'Enter') checkProfile();"
+        />
+        <button onclick="checkProfile()">CEK</button>
+      </div>
+      <div class="terminal">
+        <div class="loading" id="loading">
+          [████████████████████] Scanning profile...
+        </div>
+        <div id="result"></div>
+      </div>
+      <div class="status" id="status">Ready to scan...</div>
+    </div>
+    <script>
+      async function checkProfile() {
+        const username = document.getElementById("username").value.trim();
+        const resultElement = document.getElementById("result");
+        const loadingElement = document.getElementById("loading");
+        const statusElement = document.getElementById("status");
+        if (!username) {
+          resultElement.innerHTML = `<pre class="error">[ERROR] Username tidak boleh kosong!</pre>`;
+          statusElement.innerText = "Error: Empty username";
+          statusElement.classList.add("error");
+          return;
+        }
+        // Reset
+        resultElement.classList.remove("error");
+        statusElement.classList.remove("error");
+        resultElement.innerHTML = "";
+        loadingElement.classList.add("active");
+        statusElement.innerText = `Scanning @${username}...`;
+        try {
+          const response = await fetch(`/api/profile?username=${username}`);
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Format dan tampilkan profil dengan gambar
+          displayProfile(data, username);
+          statusElement.innerText = `✓ Profile loaded successfully`;
+        } catch (error) {
+          resultElement.innerHTML = `<pre class="error">[ERROR] ${error.message}\n\nGagal mengambil data profil. Periksa koneksi atau username Anda.</pre>`;
+          statusElement.innerText = "Error: Failed to fetch data";
+          statusElement.classList.add("error");
+        } finally {
+          loadingElement.classList.remove("active");
+        }
+      }
+      function displayProfile(data, username) {
+        const resultElement = document.getElementById("result");
+        let output = "";
+
+        // Header
+        output += `<pre>[PROFILE DATA RETRIEVED]
+${"=".repeat(50)}
+
+`;
+
+        // Ekstrak informasi profil
+        const profile = extractProfileInfo(data);
+
+        // Buat HTML dengan gambar avatar jika ada
+        let htmlContent = "";
+        let textContent = "";
+        let avatarUrl = null;
+
+        // Buat URL profil TikTok
+        const profileUrl = `https://www.tiktok.com/@${username}`;
+
+        // Tambahkan profile_url di awal
+        textContent += `├─ profile_url: <a href="${profileUrl}" target="_blank" class="profile-link">${profileUrl}</a>\n`;
+
+        for (const [key, value] of Object.entries(profile)) {
+          if (
+            key === "avatar_url" ||
+            key === "avatar" ||
+            key === "profile_pic_url"
+          ) {
+            avatarUrl = value;
+            textContent += `├─ ${key}: [IMAGE]\n`;
+          } else if (key === "is_verified" && value === true) {
+            textContent += `├─ <span class="verified-badge">${key}: ✓ VERIFIED</span>\n`;
+          } else if (
+            key === "followers" ||
+            key === "followings" ||
+            key === "likes"
+          ) {
+            textContent += `├─ ${key}: <span class="stat-value">${formatNumber(value)}</span>\n`;
+          } else if (
+            key === "external_url" &&
+            (value === null || value === "")
+          ) {
+            // Jangan tampilkan external_url jika null atau kosong
+            continue;
+          } else if (
+            value &&
+            typeof value === "object" &&
+            !Array.isArray(value)
+          ) {
+            textContent += `├─ ${key}:\n`;
+            textContent += formatObjectToText(value, 1);
+          } else {
+            textContent += `├─ ${key}: ${value}\n`;
+          }
+        }
+
+        output += textContent;
+
+        // Tambahkan gambar avatar jika ada
+        if (avatarUrl) {
+          output += `\n`;
+          htmlContent = `<img src="${avatarUrl}" alt="Avatar" class="avatar-image" onerror="this.style.display='none'">`;
+        }
+
+        output += `
+${"=".repeat(50)}
+[END OF DATA]</pre>`;
+
+        resultElement.innerHTML = output + htmlContent;
+      }
+      function extractProfileInfo(data) {
+        const profileInfo = {};
+
+        for (const [key, value] of Object.entries(data)) {
+          if (Array.isArray(value)) {
+            profileInfo[key] = `${value.length} items`;
+          } else if (value && typeof value === "object") {
+            if (isProfileRelated(key)) {
+              profileInfo[key] = extractProfileInfo(value);
+            }
+          } else {
+            profileInfo[key] = value;
+          }
+        }
+
+        return profileInfo;
+      }
+      function isProfileRelated(key) {
+        const profileKeys = [
+          "user",
+          "profile",
+          "account",
+          "stats",
+          "statistics",
+          "info",
+          "data",
+          "userInfo",
+          "accountInfo",
+          "detail",
+          "followers",
+          "following",
+          "likes",
+          "verified",
+        ];
+
+        return profileKeys.some((pk) =>
+          key.toLowerCase().includes(pk.toLowerCase()),
+        );
+      }
+      function formatObjectToText(obj, indent = 0) {
+        const spaces = "  ".repeat(indent);
+        let result = "";
+        for (const [key, value] of Object.entries(obj)) {
+          if (value && typeof value === "object" && !Array.isArray(value)) {
+            result += `${spaces}├─ ${key}:\n`;
+            result += formatObjectToText(value, indent + 1);
+          } else {
+            result += `${spaces}├─ ${key}: ${value}\n`;
+          }
+        }
+        return result;
+      }
+      function formatNumber(num) {
+        if (num >= 1000000) {
+          return (num / 1000000).toFixed(1) + "M";
+        } else if (num >= 1000) {
+          return (num / 1000).toFixed(1) + "K";
+        }
+        return num.toString();
+      }
+    </script>
+  </body>
+</html>

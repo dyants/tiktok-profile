@@ -1,0 +1,24 @@
+{
+  "name": "TikTok Scraper",
+  "endpoint": "https://www.tiktok.com/",
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36",
+  "headless": true,
+  "devtools": false,
+  "timeout": 120000,
+  "ignore_resource_types": ["image", "stylesheet", "media", "font", "manifest"],
+  "max_tries": 3,
+  "min_delay": 3000,
+  "max_delay": 7000,
+  "proxies": [
+    "http://esudlvyf:e60enh4vcf8z@31.59.20.176:6754",
+    "http://esudlvyf:e60enh4vcf8z@23.95.150.145:6114",
+    "http://esudlvyf:e60enh4vcf8z@198.23.239.134:6540",
+    "http://esudlvyf:e60enh4vcf8z@45.38.107.97:6014",
+    "http://esudlvyf:e60enh4vcf8z@107.172.163.27:6543",
+    "http://esudlvyf:e60enh4vcf8z@198.105.121.200:6462",
+    "http://esudlvyf:e60enh4vcf8z@64.137.96.74:6641",
+    "http://esudlvyf:e60enh4vcf8z@216.10.27.159:6837",
+    "http://esudlvyf:e60enh4vcf8z@142.111.67.146:5611",
+    "http://esudlvyf:e60enh4vcf8z@23.26.53.37:6003"
+  ]
+}
