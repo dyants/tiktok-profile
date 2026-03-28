@@ -211,7 +211,7 @@
         <input
           type="text"
           id="username"
-          placeholder="Masukkan username TikTok..."
+          placeholder=" username TikTok..."
           onkeypress="if (event.key === 'Enter') checkProfile();"
         />
         <button onclick="checkProfile()">CEK</button>
@@ -231,7 +231,7 @@
         const loadingElement = document.getElementById("loading");
         const statusElement = document.getElementById("status");
         if (!username) {
-          resultElement.innerHTML = `<pre class="error">[ERROR] Username tidak boleh kosong!</pre>`;
+          resultElement.innerHTML = `<pre class="error">Username tidak boleh kosong!</pre>`;
           statusElement.innerText = "Error: Empty username";
           statusElement.classList.add("error");
           return;
@@ -255,7 +255,7 @@
           displayProfile(data, username);
           statusElement.innerText = `✓ Profile loaded successfully`;
         } catch (error) {
-          resultElement.innerHTML = `<pre class="error">[ERROR] ${error.message}\n\nGagal mengambil data profil. Periksa koneksi atau username Anda.</pre>`;
+          resultElement.innerHTML = `<pre class="error">Gagal mengambil data profil. Periksa koneksi atau username Anda.</pre>`;
           statusElement.innerText = "Error: Failed to fetch data";
           statusElement.classList.add("error");
         } finally {
