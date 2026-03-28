@@ -199,6 +199,48 @@
         font-weight: bold;
         text-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
       }
+      .videos-heading {
+        margin-top: 20px;
+        color: #00ff00;
+        text-shadow: 0 0 5px #00ff00;
+        font-family: inherit;
+      }
+      .videos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px dashed #00ff00;
+      }
+      .video-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid #00ff00;
+        border-radius: 5px;
+        padding: 5px;
+        transition: transform 0.2s;
+        text-decoration: none;
+      }
+      .video-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      }
+      .video-thumbnail {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 3px;
+        margin-bottom: 5px;
+      }
+      .video-views {
+        font-size: 11px;
+        color: #ffff00;
+        font-family: sans-serif;
+        text-shadow: none;
+      }
     </style>
   </head>
   <body>
@@ -325,7 +367,26 @@ ${"=".repeat(50)}
         // Tambahkan gambar avatar jika ada
         if (avatarUrl) {
           output += `\n`;
-          htmlContent = `<img src="${avatarUrl}" alt="Avatar" class="avatar-image" onerror="this.style.display='none'">`;
+          htmlContent += `<img src="${avatarUrl}" alt="Avatar" class="avatar-image" onerror="this.style.display='none'">`;
+        }
+
+        // Tambahkan grid video jika ada
+        if (data.videos && Array.isArray(data.videos) && data.videos.length > 0) {
+          htmlContent += `<div class="videos-heading"><h3>=== Videos (${data.videos.length}) ===</h3></div>`;
+          htmlContent += `<div class="videos-grid">`;
+          data.videos.forEach(video => {
+            if (video.pic_url || video.link) {
+              const views = video.views_count ? video.views_count : '';
+              const pic = video.pic_url || 'https://via.placeholder.com/110x150/000000/00ff00.png?text=No+Thumb';
+              htmlContent += `
+                <a href="${video.link || '#'}" target="_blank" class="video-item">
+                  <img src="${pic}" alt="Thumbnail" class="video-thumbnail" onerror="this.style.display='none'">
+                  ${views ? `<span class="video-views">👁 ${views}</span>` : ''}
+                </a>
+              `;
+            }
+          });
+          htmlContent += `</div>`;
         }
 
         output += `
@@ -367,6 +428,7 @@ ${"=".repeat(50)}
           "following",
           "likes",
           "verified",
+          "videos",
         ];
 
         return profileKeys.some((pk) =>
